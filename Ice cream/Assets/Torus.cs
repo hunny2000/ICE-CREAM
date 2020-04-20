@@ -3,9 +3,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class Torus : MonoBehaviour
 {
+    public GameObject Tube;
+    public GameObject Container;
+
     public Material Choclate;
     public Material Strawberry;
     public Material Vanilla;
@@ -54,14 +56,27 @@ public class Torus : MonoBehaviour
     }
     public void Spawn()
     {
-        Pos[CurPos] = new Vector3(Pos[CurPos].x, Pos[CurPos].y, X + Pos[CurPos].z);
+        if (Counter != CurPos)
+        {
 
-        GameObject C = GameObject.Instantiate(Cyl, Pos[CurPos], Quaternion.Euler(0, 0, Z), this.transform);
-        
-        Z += 3f;
-        X += 0.007f;
+            Pos[CurPos] = new Vector3(Pos[CurPos].x, Pos[CurPos].y, X + Pos[CurPos].z);
 
-        CurPos += 1;
+            GameObject C = GameObject.Instantiate(Cyl, Pos[CurPos], Quaternion.Euler(0, 0, Z), this.transform);
+
+            //C.transform.Translate(Pos[CurPos]);
+            Tube.transform.position = C.transform.position + Vector3.forward * 2.5f;
+            Container.transform.position = C.transform.position + Vector3.forward * 7;
+
+            Z += 3f;
+            X += 0.007f;
+
+            CurPos += 1;
+        }
+        else
+        {
+            Container.transform.position = new Vector3(0,0,11f);
+            Tube.transform.position = new Vector3(0, 0, 11f);
+        }
     }
 
     public void torus()
